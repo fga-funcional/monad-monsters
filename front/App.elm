@@ -2,6 +2,7 @@ module App exposing (init, main, update, view)
 
 import Browser
 import Cards exposing (Card)
+import Style exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -25,16 +26,23 @@ init =
 
 
 type Msg
-    = New
+    = NewGame
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        New ->
+        NewGame ->
             { kind = "Kind2", name = "Name2", description = "Description2" }
 
 
-view : Model -> Html Msg
+view : Model -> Html msg
 view model =
-    div [] [img [ src "/assets/card.svg" ] [text "aaaaa"] ]
+    div [] [cardsDiv [model, model, model, model, model]]
+-- view : Model -> Html Msg
+-- view model =
+--     div []
+--         [ div [ style "display" "flex", class "table" ] []
+--         , div [ class "player-cards" ] []
+--         , div [ class "monster-mission" ] []
+--         ]
