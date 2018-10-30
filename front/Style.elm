@@ -3,6 +3,7 @@ module Style exposing (cardContainer, cardsDiv)
 import Cards exposing (Card)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 
 
 cardsDiv : List Card -> Html msg
@@ -14,9 +15,9 @@ cardsDiv xs =
         , style "height" "35vh"
         , style "position" "absolute"
         , style "bottom" "0"
-        , style "width" "100vw"
+        , style "width" "97vw"
         , style "justify-content" "center"
-        , style "align-items" "center" 
+        , style "align-items" "center"
         ]
         (List.map cardContainer xs)
 

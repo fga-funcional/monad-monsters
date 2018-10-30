@@ -1,7 +1,7 @@
 module App exposing (init, main, update, view)
 
 import Browser
-import Cards exposing (Card)
+import Cards exposing (Card, playerCards)
 import Style exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -38,7 +38,10 @@ update msg model =
 
 view : Model -> Html msg
 view model =
-    div [] [cardsDiv [model, model, model, model, model]]
+    -- div [] [cardsDiv [model, model, model, model, model]]
+    playerCards [model, model, model, model, model]
+
+
 -- view : Model -> Html Msg
 -- view model =
 --     div []
