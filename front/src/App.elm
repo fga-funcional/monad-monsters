@@ -1,7 +1,10 @@
 module App exposing (init, main, update, view)
 
+import Model exposing (Model)
+import Update exposing (Msg(..))
+import View exposing (playerCards)
+import Cards exposing (Card)
 import Browser
-import Cards exposing (Card, playerCards)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -18,27 +21,19 @@ main =
         }
 
 
-type alias Model =
-    Card
-
-
 init : Model
 init =
     { kind = "Kind", name = "Name", description = "Description" }
 
 
-type Msg
-    = NewGame
-
-
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
-        NewGame ->
+        SelectCard m ->
             ({ kind = "Kind2", name = "Name2", description = "Description2" }, Cmd.none)
 
 
-view : Model -> Html msg
+view : Model -> Html Msg
 view model =
     div [] [playerCards [ model, model, model, model, model ]]
 

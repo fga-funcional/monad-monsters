@@ -4774,10 +4774,14 @@ var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var author$project$App$update = F2(
 	function (msg, model) {
+		var m = msg.a;
 		return _Utils_Tuple2(
 			{description: 'Description2', kind: 'Kind2', name: 'Name2'},
 			elm$core$Platform$Cmd$none);
 	});
+var author$project$Update$SelectCard = function (a) {
+	return {$: 'SelectCard', a: a};
+};
 var elm$core$Basics$identity = function (x) {
 	return x;
 };
@@ -4808,12 +4812,30 @@ var elm$html$Html$Attributes$stringProperty = F2(
 			elm$json$Json$Encode$string(string));
 	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
-var author$project$Cards$cardContainer = function (c) {
+var elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		elm$html$Html$Events$on,
+		'click',
+		elm$json$Json$Decode$succeed(msg));
+};
+var author$project$View$cardContainer = function (c) {
 	return A2(
 		elm$html$Html$div,
 		_List_fromArray(
 			[
-				elm$html$Html$Attributes$class('card-container')
+				elm$html$Html$Attributes$class('card-container'),
+				elm$html$Html$Events$onClick(author$project$Update$SelectCard)
 			]),
 		_List_fromArray(
 			[
@@ -4890,14 +4912,14 @@ var elm$core$List$map = F2(
 			_List_Nil,
 			xs);
 	});
-var author$project$Cards$playerCards = function (xs) {
+var author$project$View$playerCards = function (xs) {
 	return A2(
 		elm$html$Html$div,
 		_List_fromArray(
 			[
 				elm$html$Html$Attributes$class('player-cards')
 			]),
-		A2(elm$core$List$map, author$project$Cards$cardContainer, xs));
+		A2(elm$core$List$map, author$project$View$cardContainer, xs));
 };
 var author$project$App$view = function (model) {
 	return A2(
@@ -4905,7 +4927,7 @@ var author$project$App$view = function (model) {
 		_List_Nil,
 		_List_fromArray(
 			[
-				author$project$Cards$playerCards(
+				author$project$View$playerCards(
 				_List_fromArray(
 					[model, model, model, model, model]))
 			]));

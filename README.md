@@ -3,12 +3,13 @@
 Set sass to watch compile:
 ```shell
     $ cd front
-    $ sass scss/main.scss:main.css --watch
+    $ sass scss/main.scss:static/main.css --watch
 ```
 
 To compile elm:
 ```shell
-    $ elm make App.elm --output elm.js
+    $ cd front/src
+    $ elm make App.elm --output ../static/elm.js
 ```
 
 To run haskell api:
