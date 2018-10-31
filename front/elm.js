@@ -4290,13 +4290,6 @@ function _Browser_load(url)
 	}));
 }
 var author$project$App$init = {description: 'Description', kind: 'Kind', name: 'Name'};
-var author$project$App$update = F2(
-	function (msg, model) {
-		return {description: 'Description2', kind: 'Kind2', name: 'Name2'};
-	});
-var elm$core$Basics$identity = function (x) {
-	return x;
-};
 var elm$core$Basics$False = {$: 'False'};
 var elm$core$Basics$True = {$: 'True'};
 var elm$core$Result$isOk = function (result) {
@@ -4306,11 +4299,6 @@ var elm$core$Result$isOk = function (result) {
 		return false;
 	}
 };
-var elm$core$Array$branchFactor = 32;
-var elm$core$Array$Array_elm_builtin = F4(
-	function (a, b, c, d) {
-		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
-	});
 var elm$core$Basics$EQ = {$: 'EQ'};
 var elm$core$Basics$GT = {$: 'GT'};
 var elm$core$Basics$LT = {$: 'LT'};
@@ -4391,6 +4379,11 @@ var elm$core$Array$foldr = F3(
 var elm$core$Array$toList = function (array) {
 	return A3(elm$core$Array$foldr, elm$core$List$cons, _List_Nil, array);
 };
+var elm$core$Array$branchFactor = 32;
+var elm$core$Array$Array_elm_builtin = F4(
+	function (a, b, c, d) {
+		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
+	});
 var elm$core$Basics$ceiling = _Basics_ceiling;
 var elm$core$Basics$fdiv = _Basics_fdiv;
 var elm$core$Basics$logBase = F2(
@@ -4772,6 +4765,22 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 			}
 		}
 	});
+var elm$core$Platform$Sub$batch = _Platform_batch;
+var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
+var author$project$App$subscriptions = function (model) {
+	return elm$core$Platform$Sub$none;
+};
+var elm$core$Platform$Cmd$batch = _Platform_batch;
+var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var author$project$App$update = F2(
+	function (msg, model) {
+		return _Utils_Tuple2(
+			{description: 'Description2', kind: 'Kind2', name: 'Name2'},
+			elm$core$Platform$Cmd$none);
+	});
+var elm$core$Basics$identity = function (x) {
+	return x;
+};
 var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
@@ -4788,6 +4797,8 @@ var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	}
 };
 var elm$html$Html$div = _VirtualDom_node('div');
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$json$Json$Encode$string = _Json_wrap;
 var elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -4797,13 +4808,6 @@ var elm$html$Html$Attributes$stringProperty = F2(
 			elm$json$Json$Encode$string(string));
 	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
-var elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
-var elm$svg$Svg$rect = elm$svg$Svg$trustedNode('rect');
-var elm$svg$Svg$svg = elm$svg$Svg$trustedNode('svg');
-var elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
-var elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
-var elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
-var elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var author$project$Cards$cardContainer = function (c) {
 	return A2(
 		elm$html$Html$div,
@@ -4813,26 +4817,8 @@ var author$project$Cards$cardContainer = function (c) {
 			]),
 		_List_fromArray(
 			[
-				A2(
-				elm$svg$Svg$svg,
-				_List_fromArray(
-					[
-						elm$svg$Svg$Attributes$width('200px'),
-						elm$svg$Svg$Attributes$height('40vh')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						elm$svg$Svg$rect,
-						_List_fromArray(
-							[
-								elm$svg$Svg$Attributes$width('200px'),
-								elm$svg$Svg$Attributes$height('40vh'),
-								elm$svg$Svg$Attributes$stroke('black'),
-								elm$svg$Svg$Attributes$fill('white')
-							]),
-						_List_Nil)
-					]))
+				elm$html$Html$text(c.name),
+				elm$html$Html$text(c.description)
 			]));
 };
 var elm$core$List$foldrHelper = F4(
@@ -4904,30 +4890,26 @@ var elm$core$List$map = F2(
 			_List_Nil,
 			xs);
 	});
-var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
 var author$project$Cards$playerCards = function (xs) {
 	return A2(
 		elm$html$Html$div,
 		_List_fromArray(
 			[
-				elm$html$Html$Attributes$class('player-cards'),
-				A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-				A2(elm$html$Html$Attributes$style, 'flex-wrap', 'wrap'),
-				A2(elm$html$Html$Attributes$style, 'border', 'solid'),
-				A2(elm$html$Html$Attributes$style, 'border-color', 'red')
+				elm$html$Html$Attributes$class('player-cards')
 			]),
 		A2(elm$core$List$map, author$project$Cards$cardContainer, xs));
 };
 var author$project$App$view = function (model) {
-	return author$project$Cards$playerCards(
+	return A2(
+		elm$html$Html$div,
+		_List_Nil,
 		_List_fromArray(
-			[model, model, model, model, model]));
+			[
+				author$project$Cards$playerCards(
+				_List_fromArray(
+					[model, model, model, model, model]))
+			]));
 };
-var elm$core$Platform$Cmd$batch = _Platform_batch;
-var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
-var elm$core$Platform$Sub$batch = _Platform_batch;
-var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var elm$browser$Browser$External = function (a) {
 	return {$: 'External', a: a};
 };
@@ -5154,25 +5136,15 @@ var elm$url$Url$fromString = function (str) {
 		elm$url$Url$Https,
 		A2(elm$core$String$dropLeft, 8, str)) : elm$core$Maybe$Nothing);
 };
-var elm$browser$Browser$sandbox = function (impl) {
-	return _Browser_element(
-		{
-			init: function (_n0) {
-				return _Utils_Tuple2(impl.init, elm$core$Platform$Cmd$none);
-			},
-			subscriptions: function (_n1) {
-				return elm$core$Platform$Sub$none;
-			},
-			update: F2(
-				function (msg, model) {
-					return _Utils_Tuple2(
-						A2(impl.update, msg, model),
-						elm$core$Platform$Cmd$none);
-				}),
-			view: impl.view
-		});
-};
-var author$project$App$main = elm$browser$Browser$sandbox(
-	{init: author$project$App$init, update: author$project$App$update, view: author$project$App$view});
-_Platform_export({'App':{'init':author$project$App$main(
-	elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
+var elm$browser$Browser$element = _Browser_element;
+var elm$json$Json$Decode$value = _Json_decodeValue;
+var author$project$App$main = elm$browser$Browser$element(
+	{
+		init: function (value) {
+			return _Utils_Tuple2(author$project$App$init, elm$core$Platform$Cmd$none);
+		},
+		subscriptions: author$project$App$subscriptions,
+		update: author$project$App$update,
+		view: author$project$App$view
+	});
+_Platform_export({'App':{'init':author$project$App$main(elm$json$Json$Decode$value)(0)}});}(this));

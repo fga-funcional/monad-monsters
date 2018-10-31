@@ -2,17 +2,19 @@ module App exposing (init, main, update, view)
 
 import Browser
 import Cards exposing (Card, playerCards)
-import Style exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Json.Encode exposing (Value)
 
 
+main : Program Value Model Msg
 main =
-    Browser.sandbox
-        { view = view
+    Browser.element
+        { init = \value -> (init, Cmd.none)
         , update = update
-        , init = init
+        , view = view
+        , subscriptions = subscriptions
         }
 
 
@@ -29,23 +31,17 @@ type Msg
     = NewGame
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
         NewGame ->
-            { kind = "Kind2", name = "Name2", description = "Description2" }
+            ({ kind = "Kind2", name = "Name2", description = "Description2" }, Cmd.none)
 
 
 view : Model -> Html msg
 view model =
-    -- div [] [cardsDiv [model, model, model, model, model]]
-    playerCards [model, model, model, model, model]
+    div [] [playerCards [ model, model, model, model, model ]]
 
 
--- view : Model -> Html Msg
--- view model =
---     div []
---         [ div [ style "display" "flex", class "table" ] []
---         , div [ class "player-cards" ] []
---         , div [ class "monster-mission" ] []
---         ]
+subscriptions : Model -> Sub Msg
+subscriptions model = Sub.none

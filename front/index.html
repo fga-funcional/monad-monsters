@@ -1,12 +1,13 @@
 <html>
     <head>
+        <title>Monad Monsters</title>
         <link rel="stylesheet" href="main.css">
+        <script type="text/javascript" src="elm.js"></script>
     </head>
     <body>
         <div id="content"></div>
-        <script src="elm.js"></script>
-        <script>
-            Elm.Main.embed(document.getElementById("content"))
-        </script>
     </body>
+    <script>
+        Elm.App.init({ node: document.getElementById("content") });
+    </script>
 </html>
