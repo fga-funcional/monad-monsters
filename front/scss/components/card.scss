@@ -7,6 +7,37 @@
     height: 90%;
     width: 20%; 
     padding: 0.5%;
+    background-color: white;
+}
+
+.card-content {
+    border-radius: 8px;
+    height: 93%;
+    padding: 5%;
+    // background-color: red;
+}
+
+.card-name {
+    font-size: 12px;
+    color: white;
+    margin: 1%;
+}
+
+.card-image {
+    border-radius: 8px;
+    background-color: white;
+    width: 99%;
+    height: 50%;
+}
+
+.card-description {
+    border-radius: 8px;
+    background-color: white;
+    width: 99%;
+    height: 35%;
+    margin-top: 5%;
+    font-size: 12px;
+    padding-top: 2%;
 }
 
 .player-cards {

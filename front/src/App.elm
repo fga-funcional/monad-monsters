@@ -23,19 +23,19 @@ main =
 
 init : Model
 init =
-    { kind = "Kind", name = "Name", description = "Description" }
+    { kind = "Kind", name = "Cor da Iris", description = "Description", color = "red" }
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
         SelectCard m ->
-            ({ kind = "Kind2", name = "Name2", description = "Description2" }, Cmd.none)
+            ({ kind = "Kind2", name = m.name, description = m.description, color = "blue" }, Cmd.none)
 
 
 view : Model -> Html Msg
 view model =
-    div [] [playerCards [ model, model, model, model, model ]]
+    div [class "game-area"] [playerCards [ model, model, model, model, model ]]
 
 
 subscriptions : Model -> Sub Msg

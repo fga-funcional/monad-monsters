@@ -4289,7 +4289,7 @@ function _Browser_load(url)
 		}
 	}));
 }
-var author$project$App$init = {description: 'Description', kind: 'Kind', name: 'Name'};
+var author$project$App$init = {color: 'red', description: 'Description', kind: 'Kind', name: 'Cor da Iris'};
 var elm$core$Basics$False = {$: 'False'};
 var elm$core$Basics$True = {$: 'True'};
 var elm$core$Result$isOk = function (result) {
@@ -4776,7 +4776,7 @@ var author$project$App$update = F2(
 	function (msg, model) {
 		var m = msg.a;
 		return _Utils_Tuple2(
-			{description: 'Description2', kind: 'Kind2', name: 'Name2'},
+			{color: 'blue', description: m.description, kind: 'Kind2', name: m.name + '!'},
 			elm$core$Platform$Cmd$none);
 	});
 var author$project$Update$SelectCard = function (a) {
@@ -4812,6 +4812,8 @@ var elm$html$Html$Attributes$stringProperty = F2(
 			elm$json$Json$Encode$string(string));
 	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -4835,12 +4837,48 @@ var author$project$View$cardContainer = function (c) {
 		_List_fromArray(
 			[
 				elm$html$Html$Attributes$class('card-container'),
-				elm$html$Html$Events$onClick(author$project$Update$SelectCard)
+				elm$html$Html$Events$onClick(
+				author$project$Update$SelectCard(c))
 			]),
 		_List_fromArray(
 			[
-				elm$html$Html$text(c.name),
-				elm$html$Html$text(c.description)
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$class('card-content'),
+						A2(elm$html$Html$Attributes$style, 'background-color', c.color)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('card-name')
+							]),
+						_List_fromArray(
+							[
+								elm$html$Html$text(c.name)
+							])),
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('card-image')
+							]),
+						_List_Nil),
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('card-description')
+							]),
+						_List_fromArray(
+							[
+								elm$html$Html$text(c.description)
+							]))
+					]))
 			]));
 };
 var elm$core$List$foldrHelper = F4(
@@ -4924,7 +4962,10 @@ var author$project$View$playerCards = function (xs) {
 var author$project$App$view = function (model) {
 	return A2(
 		elm$html$Html$div,
-		_List_Nil,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('game-area')
+			]),
 		_List_fromArray(
 			[
 				author$project$View$playerCards(
