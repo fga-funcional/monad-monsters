@@ -4910,12 +4910,35 @@ var elm$core$Array$set = F3(
 	});
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var elm$core$String$contains = _String_contains;
+var elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var elm$core$String$slice = _String_slice;
+var elm$core$String$dropRight = F2(
+	function (n, string) {
+		return (n < 1) ? string : A3(elm$core$String$slice, 0, -n, string);
+	});
 var author$project$Update$update = F2(
 	function (msg, model) {
 		if (msg.$ === 'SelectCard') {
 			var index = msg.a;
 			var card = msg.b;
-			return _Utils_Tuple2(
+			return A2(elm$core$String$contains, '!', card.name) ? _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{
+						cards: A3(
+							elm$core$Array$set,
+							index,
+							_Utils_update(
+								card,
+								{
+									name: A2(elm$core$String$dropRight, 1, card.name)
+								}),
+							model.cards)
+					}),
+				elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{
@@ -5459,7 +5482,6 @@ var elm$core$Task$perform = F2(
 				A2(elm$core$Task$map, toMessage, task)));
 	});
 var elm$core$String$length = _String_length;
-var elm$core$String$slice = _String_slice;
 var elm$core$String$dropLeft = F2(
 	function (n, string) {
 		return (n < 1) ? string : A3(
@@ -5479,7 +5501,6 @@ var elm$core$String$left = F2(
 	function (n, string) {
 		return (n < 1) ? '' : A3(elm$core$String$slice, 0, n, string);
 	});
-var elm$core$String$contains = _String_contains;
 var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
