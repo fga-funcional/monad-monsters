@@ -1,6 +1,6 @@
 module Model exposing (Model)
 
-import Cards exposing (Card)
+import Game exposing (Game)
 
 type alias Model =
-    Card
+    Game

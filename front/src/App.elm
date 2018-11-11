@@ -1,20 +1,21 @@
-module App exposing (init, main, update, view)
+module App exposing (init, main)
 
-import Model exposing (Model)
-import Update exposing (Msg(..))
-import View exposing (playerCards)
-import Cards exposing (Card)
 import Browser
+import Cards exposing (Card)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Json.Encode exposing (Value)
+import Model exposing (Model)
+import Update exposing (Msg(..), update)
+import View exposing (view)
+import Cards exposing (mock)
 
 
 main : Program Value Model Msg
 main =
     Browser.element
-        { init = \value -> (init, Cmd.none)
+        { init = \value -> ( init, Cmd.none )
         , update = update
         , view = view
         , subscriptions = subscriptions
@@ -23,20 +24,9 @@ main =
 
 init : Model
 init =
-    { kind = "Kind", name = "Cor da Iris", description = "Description", color = "red" }
-
-
-update : Msg -> Model -> (Model, Cmd Msg)
-update msg model =
-    case msg of
-        SelectCard m ->
-            ({ kind = "Kind2", name = m.name, description = m.description, color = "blue" }, Cmd.none)
-
-
-view : Model -> Html Msg
-view model =
-    div [class "game-area"] [playerCards [ model, model, model, model, model ]]
+    { cards = mock, mission = "Missao", monster = {head = "Cabeca"}, showMission = True}
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model = Sub.none
+subscriptions model =
+    Sub.none
