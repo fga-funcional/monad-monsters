@@ -1,18 +1,23 @@
 module View exposing (view)
 
+import Array exposing (Array)
 import Cards exposing (Card)
+import Monsters exposing (Monster)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Model exposing (Model)
 import Update exposing (Msg(..))
-import Array exposing (Array)
 
 
 view : Model -> Html Msg
 view model =
-    div [ class "game-area" ]
-        [ table, mission, playerCards model.cards ]
+    if model.showMission then
+        div [ class "game-area" ]
+            [ table, mission "Mission", playerCards model.cards ]
+    else
+        div [ class "game-area" ]
+            [ table, monster model.monster, playerCards model.cards ]
 
 
 playerCards : Array Card -> Html Msg
@@ -44,10 +49,20 @@ table =
         []
 
 
-mission : Html Msg
-mission =
+
+mission : String -> Html Msg
+mission m =
     div
         [ class "mission-monster" ]
         [ div [ class "toggle" ]
-            [ button [ onClick ShowMonster ] [ text "Monster" ] ]
+            [ button [onClick ToggleMission ] [ text "Monster" ] ]
+        ]
+
+
+monster : Monster -> Html Msg
+monster m =
+    div
+        [ class "mission-monster" ]
+        [ div [ class "toggle" ]
+            [ button [onClick ToggleMission ] [ text "Mission" ] ]
         ]
