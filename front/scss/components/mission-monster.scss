@@ -11,5 +11,67 @@
 .toggle {
     margin-right: auto;
     margin-left: auto;
-    width: 10vw;
+    width: max-content;
+}
+
+.mission-container {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 2%;
+    border: 2px solid black;
+    border-radius: 8px;
+    height: 80%;
+    width: 40%; 
+    padding: 1.5%;
+    background-color: white;
+}
+
+.mission-content {
+    border-radius: 8px;
+    height: 93%;
+    padding: 5%;
+    // background-color: red;
+}
+
+.mission-name {
+    font-size: 12px;
+    color: white;
+    margin: 1%;
+}
+
+.mission-image {
+    border-radius: 8px;
+    background-color: white;
+    width: 99%;
+    height: 50%;
+}
+
+.mission-description {
+    border-radius: 8px;
+    background-color: white;
+    width: 99%;
+    height: 35%;
+    margin-top: 5%;
+    font-size: 12px;
+    padding-top: 2%;
+}
+
+.player-cards {
+    display: flex;
+    height: 35vh;
+    position: absolute;
+    bottom: 0;
+    width: 97vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.monster {
+    padding: 10%;
+    width: 40vw;
+    height: 40vh;
+}
+
+.monster-head {
+    width: max-content;
 }
