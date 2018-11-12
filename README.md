@@ -6,10 +6,10 @@ Set sass to watch compile:
     $ sass scss/main.scss:static/main.css --watch
 ```
 
-To compile elm:
+To run elm compile watcher:
 ```shell
-    $ cd front/src
-    $ elm make App.elm --output ../static/elm.js
+    $ cd scripts
+    $ ./run-elm.sh
 ```
 
 To run haskell api:
