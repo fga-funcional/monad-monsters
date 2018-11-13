@@ -4959,7 +4959,6 @@ var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 			return 3;
 	}
 };
-var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
@@ -4972,6 +4971,57 @@ var elm$html$Html$Attributes$stringProperty = F2(
 			elm$json$Json$Encode$string(string));
 	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var author$project$View$missionContainer = function (c) {
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('mission-container')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$class('mission-content'),
+						A2(elm$html$Html$Attributes$style, 'background-color', c.color)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('mission-name')
+							]),
+						_List_fromArray(
+							[
+								elm$html$Html$text(c.name)
+							])),
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('mission-image')
+							]),
+						_List_Nil),
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('mission-description')
+							]),
+						_List_fromArray(
+							[
+								elm$html$Html$text(c.description)
+							]))
+					]))
+			]));
+};
+var elm$html$Html$button = _VirtualDom_node('button');
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -4989,7 +5039,7 @@ var elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		elm$json$Json$Decode$succeed(msg));
 };
-var author$project$View$mission = function (m) {
+var author$project$View$mission = function (c) {
 	return A2(
 		elm$html$Html$div,
 		_List_fromArray(
@@ -5010,16 +5060,71 @@ var author$project$View$mission = function (m) {
 						elm$html$Html$button,
 						_List_fromArray(
 							[
-								elm$html$Html$Attributes$class('toggle'),
 								elm$html$Html$Events$onClick(author$project$Update$ToggleMission)
 							]),
 						_List_fromArray(
 							[
 								elm$html$Html$text('Monster')
 							]))
-					]))
+					])),
+				author$project$View$missionContainer(c)
 			]));
 };
+var elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var elm$svg$Svg$circle = elm$svg$Svg$trustedNode('circle');
+var elm$svg$Svg$svg = elm$svg$Svg$trustedNode('svg');
+var elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
+var elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
+var elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
+var elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
+var elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
+var author$project$View$monsterContainer = A2(
+	elm$html$Html$div,
+	_List_fromArray(
+		[
+			elm$html$Html$Attributes$class('monster')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('monster-head')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					elm$svg$Svg$svg,
+					_List_fromArray(
+						[
+							elm$svg$Svg$Attributes$width('40%'),
+							elm$svg$Svg$Attributes$height('40%'),
+							A2(elm$html$Html$Attributes$style, 'background', '#000000')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							elm$svg$Svg$circle,
+							_List_fromArray(
+								[
+									elm$svg$Svg$Attributes$r('50px'),
+									elm$svg$Svg$Attributes$fill('#00ff00'),
+									elm$svg$Svg$Attributes$cx('50%'),
+									elm$svg$Svg$Attributes$cy('50%')
+								]),
+							_List_Nil)
+						]))
+				])),
+			A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('monster-body')
+				]),
+			_List_Nil)
+		]));
 var author$project$View$monster = function (m) {
 	return A2(
 		elm$html$Html$div,
@@ -5041,22 +5146,20 @@ var author$project$View$monster = function (m) {
 						elm$html$Html$button,
 						_List_fromArray(
 							[
-								elm$html$Html$Attributes$class('toggle'),
 								elm$html$Html$Events$onClick(author$project$Update$ToggleMission)
 							]),
 						_List_fromArray(
 							[
 								elm$html$Html$text('Mission')
 							]))
-					]))
+					])),
+				author$project$View$monsterContainer
 			]));
 };
 var author$project$Update$SelectCard = F2(
 	function (a, b) {
 		return {$: 'SelectCard', a: a, b: b};
 	});
-var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
 var author$project$View$cardContainer = F2(
 	function (i, c) {
 		return A2(
@@ -5173,7 +5276,8 @@ var author$project$View$view = function (model) {
 		_List_fromArray(
 			[
 				author$project$View$table,
-				author$project$View$mission('Mission'),
+				author$project$View$mission(
+				{color: 'grey', description: 'Missao 1', kind: 'Kind', name: 'Missao'}),
 				author$project$View$playerCards(model.cards)
 			])) : A2(
 		elm$html$Html$div,

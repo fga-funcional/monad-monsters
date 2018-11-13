@@ -2,11 +2,13 @@ module View exposing (view)
 
 import Array exposing (Array)
 import Cards exposing (Card)
-import Monsters exposing (Monster)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Model exposing (Model)
+import Monsters exposing (Monster)
+import Svg
+import Svg.Attributes as SvgAttrs
 import Update exposing (Msg(..))
 
 
@@ -14,7 +16,11 @@ view : Model -> Html Msg
 view model =
     if model.showMission then
         div [ class "game-area" ]
-            [ table, mission "Mission", playerCards model.cards ]
+            [ table
+            , mission { kind = "Kind", name = "Missao", description = "Missao 1", color = "grey" }
+            , playerCards model.cards
+            ]
+
     else
         div [ class "game-area" ]
             [ table, monster model.monster, playerCards model.cards ]
@@ -42,6 +48,42 @@ cardContainer i c =
         ]
 
 
+missionContainer : Card -> Html Msg
+missionContainer c =
+    div
+        [ class "mission-container" ]
+        [ div
+            [ class "mission-content", style "background-color" c.color ]
+            [ div [ class "mission-name" ] [ text c.name ]
+            , div [ class "mission-image" ] []
+            , div [ class "mission-description" ] [ text c.description ]
+            ]
+        ]
+
+
+monsterContainer : Html Msg
+monsterContainer =
+    div
+        [ class "monster" ]
+        [ div [ class "monster-head" ]
+            [ Svg.svg
+                [ SvgAttrs.width "40%"
+                , SvgAttrs.height "40%"
+                , style "background" "#000000"
+                ]
+                [ Svg.circle
+                    [ SvgAttrs.r "50px"
+                    , SvgAttrs.fill "#00ff00"
+                    , SvgAttrs.cx "50%"
+                    , SvgAttrs.cy "50%"
+                    ]
+                    []
+                ]
+            ]
+        , div [ class "monster-body" ] []
+        ]
+
+
 table : Html Msg
 table =
     div
@@ -49,13 +91,13 @@ table =
         []
 
 
-
-mission : String -> Html Msg
-mission m =
+mission : Card -> Html Msg
+mission c =
     div
         [ class "mission-monster" ]
         [ div [ class "toggle" ]
-            [ button [onClick ToggleMission ] [ text "Monster" ] ]
+            [ button [ onClick ToggleMission ] [ text "Monster" ] ]
+        , missionContainer c
         ]
 
 
@@ -64,5 +106,6 @@ monster m =
     div
         [ class "mission-monster" ]
         [ div [ class "toggle" ]
-            [ button [onClick ToggleMission ] [ text "Mission" ] ]
+            [ button [ onClick ToggleMission ] [ text "Mission" ] ]
+        , monsterContainer
         ]
