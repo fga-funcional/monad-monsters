@@ -1,2 +1,13 @@
+module Game exposing (..)
 
-type alias Game = {player1 : Player, player2 : Player}
+import Array exposing (Array)
+import Cards exposing (Card)
+import Monsters exposing (Monster)
+
+
+type alias Game =
+    { cards : Array Card
+    , mission : String
+    , monster : Monster
+    , showMission : Bool
+    }

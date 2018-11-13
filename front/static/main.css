@@ -41,6 +41,19 @@
   justify-content: center;
   align-items: center; }
 
+.game-table {
+  width: 55vw;
+  height: 55vh;
+  border: solid 4px white; }
+
+.mission-monster {
+  width: 40vw;
+  height: 55vh;
+  border: solid 4px white;
+  position: absolute;
+  top: 8;
+  right: 1; }
+
 .game-area {
   background-color: black;
   height: 100vh;
