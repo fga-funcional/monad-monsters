@@ -4929,10 +4929,18 @@ var author$project$Update$update = F2(
 					}),
 				elm$core$Platform$Cmd$none);
 		} else {
-			return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+			return model.showMission ? _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{showMission: false}),
+				elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{showMission: true}),
+				elm$core$Platform$Cmd$none);
 		}
 	});
-var author$project$Update$ShowMonster = {$: 'ShowMonster'};
+var author$project$Update$ToggleMission = {$: 'ToggleMission'};
 var elm$core$Basics$identity = function (x) {
 	return x;
 };
@@ -4981,34 +4989,68 @@ var elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		elm$json$Json$Decode$succeed(msg));
 };
-var author$project$View$mission = A2(
-	elm$html$Html$div,
-	_List_fromArray(
-		[
-			elm$html$Html$Attributes$class('mission-monster')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			elm$html$Html$div,
-			_List_fromArray(
-				[
-					elm$html$Html$Attributes$class('toggle')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Events$onClick(author$project$Update$ShowMonster)
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('Monster')
-						]))
-				]))
-		]));
+var author$project$View$mission = function (m) {
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('mission-monster')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$class('toggle')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$button,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('toggle'),
+								elm$html$Html$Events$onClick(author$project$Update$ToggleMission)
+							]),
+						_List_fromArray(
+							[
+								elm$html$Html$text('Monster')
+							]))
+					]))
+			]));
+};
+var author$project$View$monster = function (m) {
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('mission-monster')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$class('toggle')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$button,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('toggle'),
+								elm$html$Html$Events$onClick(author$project$Update$ToggleMission)
+							]),
+						_List_fromArray(
+							[
+								elm$html$Html$text('Mission')
+							]))
+					]))
+			]));
+};
 var author$project$Update$SelectCard = F2(
 	function (a, b) {
 		return {$: 'SelectCard', a: a, b: b};
@@ -5122,7 +5164,7 @@ var author$project$View$table = A2(
 		]),
 	_List_Nil);
 var author$project$View$view = function (model) {
-	return A2(
+	return model.showMission ? A2(
 		elm$html$Html$div,
 		_List_fromArray(
 			[
@@ -5131,7 +5173,18 @@ var author$project$View$view = function (model) {
 		_List_fromArray(
 			[
 				author$project$View$table,
-				author$project$View$mission,
+				author$project$View$mission('Mission'),
+				author$project$View$playerCards(model.cards)
+			])) : A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('game-area')
+			]),
+		_List_fromArray(
+			[
+				author$project$View$table,
+				author$project$View$monster(model.monster),
 				author$project$View$playerCards(model.cards)
 			]));
 };

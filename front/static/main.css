@@ -54,6 +54,11 @@
   top: 8;
   right: 1; }
 
+.toggle {
+  margin-right: auto;
+  margin-left: auto;
+  width: 10vw; }
+
 .game-area {
   background-color: black;
   height: 100vh;
