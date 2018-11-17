@@ -1,9 +1,15 @@
+## Dependencies
+[```elm```](https://elm-lang.org/)
+
+[```create-elm-app```](https://github.com/halfzebra/create-elm-app)
+
+
 ## How to run the development server
 
-To run elm and sass compile watcher:
+To run elm development server:
 ```shell
-    $ cd scripts
-    $ ./run-dev.sh
+    $ cd front
+    $ elm-app start
 ```
 
 To run haskell api:
