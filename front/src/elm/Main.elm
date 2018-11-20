@@ -1,46 +1,21 @@
-module Main exposing (Model, Msg(..), init, main, update, view)
+module Main exposing (init, main, view)
 
 import Browser
 import Browser.Navigation as Nav
 import Game exposing (Game, game, mock)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
+import Http
+import Model exposing (..)
 import Routing exposing (..)
+import Update exposing (..)
 import Url
-
-
-
----- MODEL ----
-
-
-type alias Model =
-    { curUrl : Url.Url, curGame : Game }
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model url mock, Cmd.none )
-
-
-
----- UPDATE ----
-
-
-type Msg
-    = LinkClicked Browser.UrlRequest
-    | UrlChanged Url.Url
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        UrlChanged url ->
-            ( { model | curUrl = url }
-            , Cmd.none
-            )
-
-        _ ->
-            ( model, Cmd.none )
+    ( Model url mock "", Cmd.none )
 
 
 
@@ -59,7 +34,12 @@ subscriptions _ =
 view : Model -> Browser.Document Msg
 view model =
     { title = "Monad Monsters"
-    , body = [ viewRoute model.curUrl ]
+    , body =
+        [ div []
+            [ button [ onClick (MakeGetRequest "http://localhost:8000/newgame") ] [ text "tst" ]
+            , text <| Debug.toString model.error
+            ]
+        ]
     }
 
 
