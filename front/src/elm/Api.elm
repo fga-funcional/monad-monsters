@@ -1,17 +1,30 @@
-module Api exposing (getNewGame, getRequest, sendRequest)
+module Api exposing (get, ApiRequest(..))
 
 import Game exposing (Game, gameDecoder)
 import Http
 import Json.Decode as D
 import Model exposing (Msg(..))
+import Url.Builder exposing (absolute, string)
+
+
+type ApiRequest
+    = Game String
+    | Player
 
 
 getNewGame : Http.Request Game
 getNewGame =
     -- getRequest2
     getRequest
-    "http://localhost:8000/newgame"
-    gameDecoder
+        "http://localhost:8000/newgame"
+        gameDecoder
+
+
+getGame : String -> Http.Request Game
+getGame name =
+    getRequest
+        ("http://localhost:8000/game/" ++ name) 
+        gameDecoder
 
 
 getRequest : String -> D.Decoder a -> Http.Request a
@@ -19,22 +32,10 @@ getRequest url decoder =
     Http.get url decoder
 
 
-sendRequest : Cmd Msg
-sendRequest =
-    Debug.log "entrou"
-        Http.send
-        LoadGame
-        getNewGame
-
-
-getRequest2 : Http.Request Game
-getRequest2 =
-    Http.request
-        { method = "GET"
-        , url = "http://localhost:8000/newgame"
-        , headers = [ Http.header "Access-Control-Allow-Origin" "*"  ]
-        , body = Http.emptyBody
-        , expect = Http.expectJson gameDecoder
-        , timeout = Nothing
-        , withCredentials = False
-        }
+get : ApiRequest -> Cmd Msg
+get api =
+    case api of
+        Game name ->
+            Http.send LoadGame (getGame name)
+        Player ->
+            Cmd.none
