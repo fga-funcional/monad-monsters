@@ -15,20 +15,12 @@ import Url
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model url mock "", Cmd.none )
-
-
-
--- SUBSCRIPTIONS
+    ( Model url mock "", router url )
 
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.none
-
-
-
----- VIEW ----
 
 
 view : Model -> Browser.Document Msg
@@ -37,14 +29,11 @@ view model =
     , body =
         [ div []
             [ button [ onClick (MakeGetRequest "http://localhost:8000/newgame") ] [ text "tst" ]
-            , text <| Debug.toString model.error
+            , text model.curGame.gameName
+            , text model.error
             ]
         ]
     }
-
-
-
----- PROGRAM ----
 
 
 main : Program () Model Msg
