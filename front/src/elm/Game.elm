@@ -2,20 +2,20 @@ module Game exposing (Game, game, mock, gameDecoder)
 
 import Json.Decode as D
 
-import Player exposing (Player, playerDecoder)
+import Player exposing (Player, playerListDecoder)
 
 type alias Game =
-    { gameId : Int, gameName : String, playerTurn : Bool, player : Player }
+    { gameId : Int, gameName : String, playerTurn : Bool, players : List Player }
 
 
 game : String -> Game
 game name =
-    Game 1 "jogo" False (Player 1 2)
+    Game 1 "jogo" False [(Player 1 2)]
 
 
 mock : Game
 mock = 
-    Game 0 "" False (Player 0 0)
+    Game 0 "" False [(Player 0 0)]
 
 
 gameDecoder : D.Decoder Game
@@ -24,4 +24,4 @@ gameDecoder =
         (D.field "gameId" D.int)
         (D.field "gameName" D.string)
         (D.field "playerTurn" D.bool)
-        (D.field "player" playerDecoder)
+        (D.field "players" playerListDecoder)

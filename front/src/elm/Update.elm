@@ -1,10 +1,12 @@
 module Update exposing (update)
 
 import Browser
-import Browser.Navigation exposing (pushUrl)
+import Browser.Navigation exposing (pushUrl, replaceUrl)
 import Game exposing (Game)
 import Http
-import Model exposing (..)
+import Model exposing (Model)
+import Msg exposing (Msg(..))
+import Pages
 import Routing exposing (router)
 import Url
 
@@ -16,16 +18,32 @@ update msg model =
             ( { model | curUrl = url }, router url )
 
         LoadGame (Ok game) ->
-            ( { model | curGame = Just game }, Cmd.none )
+            ( { model | curGame = Just game, page = Pages.Player }, Cmd.none )
 
-        LoadGame (Err error) ->
-            ( { model | curGame = Nothing }, Cmd.none )
+        LoadPlayer (Ok player) ->
+            ( { model | page = Pages.Game }, Cmd.none )
 
-        SearchGame ->
-            ( model, Url.toString model.curUrl ++ model.search |> pushUrl model.key )
+        SearchGame q ->
+            ( model, makeUrl [q] |> pushUrl model.key )
 
-        ChangeSearch q ->
-            ( { model | search = q }, Cmd.none )
+        AuthPlayer game playerName ->
+            ( model, makeUrl [game.gameName, playerName] |> pushUrl model.key )
+
+        ChangeSearch s ->
+            ( { model | search = s }, Cmd.none )
+
+        ChangePlayer s ->
+            ( { model | playerName = s }, Cmd.none )
 
         _ ->
-            ( model, Cmd.none )
+            ( { model | page = Pages.Error }, Cmd.none )
+
+
+makeUrl : List String -> String
+makeUrl lst =
+    baseUrl ++ String.join "/" lst
+
+
+baseUrl : String
+baseUrl =
+    "http://localhost:3000/"

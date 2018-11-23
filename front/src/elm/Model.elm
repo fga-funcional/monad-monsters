@@ -1,11 +1,11 @@
-module Model exposing (Model, Msg(..))
+module Model exposing (Model)
 
 import Browser
 import Browser.Navigation as Nav
 import Game exposing (Game)
 import Html exposing (Html)
 import Http
-import Pages.Page exposing (..)
+import Pages exposing (Page(..))
 import Url
 
 
@@ -15,13 +15,5 @@ type alias Model =
     , curGame : Maybe Game
     , page : Page
     , search : String
+    , playerName : String
     }
-
-
-type Msg
-    = LinkClicked Browser.UrlRequest
-    | UrlChanged Url.Url
-    | LoadGame (Result Http.Error Game)
-    | MakeGetRequest String
-    | SearchGame
-    | ChangeSearch String

@@ -4,9 +4,9 @@ import Api
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import List
-import Model exposing (Msg)
+import Msg exposing (Msg(..))
 import Url
-import Url.Parser exposing ((</>), Parser, custom, int, oneOf, parse, string, top)
+import Url.Parser exposing ((</>), Parser, oneOf, parse, string)
 
 
 type Route
@@ -43,4 +43,4 @@ delegateRequest route =
             Api.get (Api.Game name)
 
         Player g p ->
-            Api.get Api.Player
+            Api.get (Api.Player g p)

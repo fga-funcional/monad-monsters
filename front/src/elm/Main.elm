@@ -7,9 +7,9 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Http
-import Model exposing (..)
-import Pages.Home exposing (homeView)
-import Pages.Page exposing (Page(..))
+import Model exposing (Model)
+import Msg exposing (Msg(..))
+import Pages
 import Routing exposing (..)
 import Update exposing (..)
 import Url
@@ -17,7 +17,7 @@ import Url
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model key url Nothing Home "", router url )
+    ( Model key url Nothing Pages.Home "" "", router url )
 
 
 subscriptions : Model -> Sub Msg
@@ -28,8 +28,28 @@ subscriptions _ =
 view : Model -> Browser.Document Msg
 view model =
     case model.page of
-        Home ->
-            homeView model
+        Pages.Home ->
+            Pages.home model.search
+
+        Pages.Player ->
+            case model.curGame of
+                Nothing ->
+                    -- TODO: FIX
+                    Pages.error
+
+                Just game ->
+                    Pages.player game model.playerName
+
+        Pages.Game ->
+            case model.curGame of
+                Nothing ->
+                    Pages.error
+    
+                Just g ->
+                    Pages.game g
+
+        Pages.Error ->
+            Pages.error
 
 
 main : Program () Model Msg
