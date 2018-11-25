@@ -7,7 +7,7 @@ import Http
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Pages
-import Routing exposing (router)
+import Routing exposing (router, makeUrl)
 import Url
 
 
@@ -37,13 +37,3 @@ update msg model =
 
         _ ->
             ( { model | page = Pages.Error }, Cmd.none )
-
-
-makeUrl : List String -> String
-makeUrl lst =
-    baseUrl ++ String.join "/" lst
-
-
-baseUrl : String
-baseUrl =
-    "http://localhost:3000/"
