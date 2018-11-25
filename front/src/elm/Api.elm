@@ -16,15 +16,15 @@ type ApiRequest
 getGame : String -> Http.Request Game
 getGame name =
     getRequest
-        ("http://localhost:8000/game/" ++ name)
+        (buildStringUrl "http://localhost:8000/" ["game", name])
         gameDecoder
 
 
-getPlayer : String -> String -> Http.Request Player
+getPlayer : String -> String -> Http.Request Game
 getPlayer g p =
     getRequest
-        ("http://localhost:8000/game/" ++ g)
-        playerDecoder
+        (buildStringUrl "http://localhost:8000/" ["player", g, p])
+        gameDecoder
 
 
 getRequest : String -> D.Decoder a -> Http.Request a
@@ -40,3 +40,8 @@ get request =
 
         Player g p ->
             Http.send LoadPlayer (getPlayer g p)
+
+
+buildStringUrl : String -> List String -> String
+buildStringUrl base params =
+    base ++ String.join "/" params

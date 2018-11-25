@@ -11,7 +11,7 @@ type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
     | LoadGame (Result Http.Error Game)
-    | LoadPlayer (Result Http.Error Player)
+    | LoadPlayer (Result Http.Error Game)
     | MakeGetRequest String
     | SearchGame String
     | ChangeSearch String

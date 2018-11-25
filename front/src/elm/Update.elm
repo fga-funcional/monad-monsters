@@ -20,8 +20,14 @@ update msg model =
         LoadGame (Ok game) ->
             ( { model | curGame = Just game, page = Pages.Player }, Cmd.none )
 
-        LoadPlayer (Ok player) ->
-            ( { model | page = Pages.Game }, Cmd.none )
+        LoadGame (Err err) ->
+            ( { model | curGame = Nothing, page = Pages.ErrorWithMsg <| Debug.toString err }, Cmd.none )
+
+        LoadPlayer (Ok game) ->
+            ( { model | curGame = Just game, page = Pages.Game }, Cmd.none )
+
+        LoadPlayer (Err err) ->
+            ( { model | curGame = Nothing, page = Pages.ErrorWithMsg <| Debug.toString err }, Cmd.none )
 
         SearchGame q ->
             ( model, makeUrl [q] |> pushUrl model.key )
