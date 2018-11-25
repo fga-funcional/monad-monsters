@@ -1,4 +1,4 @@
-module Pages exposing (Page(..), error, home, player, game)
+module Pages exposing (Page(..), error, errorWithMsg, game, home, player)
 
 import Browser
 import Game exposing (Game, mock)
@@ -14,6 +14,7 @@ type Page
     | Player
     | Error
     | Game
+    | ErrorWithMsg String
 
 
 home : String -> Browser.Document Msg
@@ -44,7 +45,7 @@ home s =
 player : Game -> String -> Browser.Document Msg
 player g playerName =
     -- debug purpouses
-    { title = g.gameName ++ " " ++ (String.fromInt g.gameId) ++ " | Monad Monsters"
+    { title = g.gameName ++ " " ++ String.fromInt g.gameId ++ " | Monad Monsters"
     , body =
         [ div
             [ class "main-container" ]
@@ -74,7 +75,7 @@ game g =
             [ class "main-container" ]
             [ div
                 [ class "input-player" ]
-                [text "O JOGO COMEÇOU"]
+                [ text "O JOGO COMEÇOU" ]
             ]
         ]
     }
@@ -87,5 +88,16 @@ error =
         [ div
             [ class "main-container" ]
             [ h1 [] [ text "Sorry, something went wrong! :(" ] ]
+        ]
+    }
+
+
+errorWithMsg : String -> Browser.Document Msg
+errorWithMsg msg =
+    { title = "Monad Monsters"
+    , body =
+        [ div
+            [ class "main-container" ]
+            [ h1 [] [ text msg ] ]
         ]
     }

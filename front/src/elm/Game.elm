@@ -10,12 +10,12 @@ type alias Game =
 
 game : String -> Game
 game name =
-    Game 1 "jogo" [(Player 1 2)]
+    Game 1 "jogo" [(Player 1 "robert")]
 
 
 mock : Game
 mock = 
-    Game 0 "" [(Player 0 0)]
+    Game 0 "" [(Player 0 "jhon")]
 
 
 gameDecoder : D.Decoder Game

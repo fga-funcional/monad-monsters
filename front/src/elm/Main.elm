@@ -51,6 +51,9 @@ view model =
         Pages.Error ->
             Pages.error
 
+        Pages.ErrorWithMsg e ->
+            Pages.errorWithMsg e
+
 
 main : Program () Model Msg
 main =
