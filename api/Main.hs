@@ -14,7 +14,7 @@ import Data.List as List
 data Player = Player {playerId :: Int, playerName :: String} deriving(Generic, Show, Eq)
 instance ToJSON Player
 
-data Game = Game {gameId :: Int, gameName :: String, players :: [Player]} deriving(Generic, Show, Eq)
+data Game = Game {gameId :: Int, gameName :: String, players :: [Player], waiting :: Bool} deriving(Generic, Show, Eq)
 instance ToJSON Game
 
 data Error = Error {etype :: String, msg :: String} deriving(Generic, Show)
@@ -28,6 +28,17 @@ main = do
     scotty 8000 $ do
         middleware simpleCors
         
+        get "/:game" $ do
+            g <- param "game"
+            gs <- liftIO $ readMVar gameList
+
+            case getGame g gs of
+                Nothing ->
+                    json gameNotFound
+                
+                Just game ->
+                    json game
+
         get "/game/:name" $ do
             name <- param "name"
             gs <- liftIO $ readMVar gameList
@@ -58,7 +69,7 @@ main = do
                         liftIO $ modifyMVar gameList $ \gameList' -> return (newGame:gs, True)
                         json newGame
                         where
-                            newGame = Game (gameId (head gs) + 1) gameName [Player 0 playerName]
+                            newGame = Game (gameId (head gs) + 1) gameName [Player 0 playerName] True
                     
                 Just game ->
                     do
@@ -73,7 +84,10 @@ main = do
 registerPlayer :: Game -> String -> Game
 registerPlayer g nick =
     -- TODO: fix player duplicates
-    Game (gameId g) (gameName g) (Player{playerId = getPlayerId g, playerName = nick}:players g)
+    let
+        waiting = (null $ players g)
+    in
+    Game (gameId g) (gameName g) (Player{playerId = getPlayerId g, playerName = nick}:players g) waiting
 
 
 getPlayerId :: Game -> Int
@@ -110,7 +124,7 @@ validateGame name lst =
             | otherwise = core name xs (prevId + 1)
 
         core name [] prevId =
-            Just Game {gameId = prevId, gameName = name, players = []}
+            Just Game {gameId = prevId, gameName = name, players = [], waiting = True}
 
 
 
@@ -123,6 +137,10 @@ validateMaxPlayers g
 gameError :: Error
 gameError =
     Error {etype = "Game", msg = "Game already exists"}
+
+gameNotFound :: Error
+gameNotFound =
+    Error {etype = "Game", msg = "Game not found"}
 
 -- newGame :: String -> IO Game
 -- newGame gameName =

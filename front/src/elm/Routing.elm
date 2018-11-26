@@ -10,7 +10,7 @@ import Url.Parser exposing ((</>), Parser, oneOf, parse, string)
 
 
 type Route
-    = Game String
+    = NewGame String
     | Player String String
 
 
@@ -31,7 +31,7 @@ router url =
 routeParser : Parser (Route -> a) a
 routeParser =
     oneOf
-        [ Url.Parser.map Game string
+        [ Url.Parser.map NewGame string
         , Url.Parser.map Player (string </> string)
         ]
 
@@ -39,8 +39,8 @@ routeParser =
 delegateRequest : Route -> Cmd Msg
 delegateRequest route =
     case route of
-        Game name ->
-            Api.get (Api.Game name)
+        NewGame name ->
+            Api.get (Api.NewGame name)
 
         Player g p ->
             Api.get (Api.Player g p)

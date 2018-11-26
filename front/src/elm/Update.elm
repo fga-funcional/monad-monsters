@@ -9,6 +9,7 @@ import Msg exposing (Msg(..))
 import Pages
 import Routing exposing (router, makeUrl)
 import Url
+import Api
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -33,13 +34,21 @@ update msg model =
             ( model, makeUrl [q] |> pushUrl model.key )
 
         AuthPlayer game playerName ->
-            ( model, makeUrl [game.gameName, playerName] |> pushUrl model.key )
+            ( model, makeUrl [game.name, playerName] |> pushUrl model.key )
 
         ChangeSearch s ->
             ( { model | search = s }, Cmd.none )
 
         ChangePlayer s ->
             ( { model | playerName = s }, Cmd.none )
+
+        UpdateGame t ->
+            case model.curGame of
+                Nothing ->
+                    (model, Cmd.none)
+
+                Just game ->
+                    (model, Api.get (Api.Game game.name))
 
         _ ->
             ( { model | page = Pages.Error }, Cmd.none )

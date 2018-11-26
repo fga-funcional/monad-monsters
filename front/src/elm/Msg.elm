@@ -6,14 +6,15 @@ import Url
 import Http
 import Game exposing (Game)
 import Player exposing (Player)
+import Time
 
 type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
     | LoadGame (Result Http.Error Game)
     | LoadPlayer (Result Http.Error Game)
-    | MakeGetRequest String
     | SearchGame String
     | ChangeSearch String
     | ChangePlayer String
     | AuthPlayer Game String
+    | UpdateGame Time.Posix

@@ -45,7 +45,7 @@ home s =
 player : Game -> String -> Browser.Document Msg
 player g playerName =
     -- debug purpouses
-    { title = g.gameName ++ " " ++ String.fromInt g.gameId ++ " | Monad Monsters"
+    { title = g.name ++ " " ++ String.fromInt g.id ++ " | Monad Monsters"
     , body =
         [ div
             [ class "main-container" ]
@@ -69,13 +69,22 @@ player g playerName =
 
 game : Game -> Browser.Document Msg
 game g =
-    { title = g.gameName ++ " | Monad Monsters"
+    let
+        content =
+            case g.waiting of
+                True -> 
+                    h2 [] [text "Waiting for players"]
+                False ->
+                    h2 [] [text "Ready to play"]
+    in
+    
+    { title = g.name ++ " | Monad Monsters"
     , body =
         [ div
             [ class "main-container" ]
             [ div
                 [ class "input-player" ]
-                [ text "O JOGO COMEÇOU" ]
+                [ content ]
             ]
         ]
     }
