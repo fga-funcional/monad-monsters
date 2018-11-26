@@ -15,7 +15,7 @@ game name =
 
 mock : Game
 mock = 
-    Game 0 "game" False (Player 0 0)
+    Game 0 "" False (Player 0 0)
 
 
 gameDecoder : D.Decoder Game

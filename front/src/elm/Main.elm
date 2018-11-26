@@ -8,6 +8,8 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Http
 import Model exposing (..)
+import Pages.Home exposing (homeView)
+import Pages.Page exposing (Page(..))
 import Routing exposing (..)
 import Update exposing (..)
 import Url
@@ -15,7 +17,7 @@ import Url
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model url mock "", router url )
+    ( Model key url Nothing Home "", router url )
 
 
 subscriptions : Model -> Sub Msg
@@ -25,15 +27,9 @@ subscriptions _ =
 
 view : Model -> Browser.Document Msg
 view model =
-    { title = "Monad Monsters"
-    , body =
-        [ div []
-            [ button [ onClick (MakeGetRequest "http://localhost:8000/newgame") ] [ text "tst" ]
-            , text model.curGame.gameName
-            , text model.error
-            ]
-        ]
-    }
+    case model.page of
+        Home ->
+            homeView model
 
 
 main : Program () Model Msg
