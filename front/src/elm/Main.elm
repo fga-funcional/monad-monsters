@@ -13,6 +13,7 @@ import Pages
 import Routing exposing (..)
 import Update exposing (..)
 import Url
+import Time
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
@@ -22,7 +23,7 @@ init flags url key =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Sub.none
+    Time.every 2000 UpdateGame
 
 
 view : Model -> Browser.Document Msg
