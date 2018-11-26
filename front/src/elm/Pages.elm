@@ -43,7 +43,8 @@ home s =
 
 player : Game -> String -> Browser.Document Msg
 player g playerName =
-    { title = g.gameName ++ " | Monad Monsters"
+    -- debug purpouses
+    { title = g.gameName ++ " " ++ (String.fromInt g.gameId) ++ " | Monad Monsters"
     , body =
         [ div
             [ class "main-container" ]

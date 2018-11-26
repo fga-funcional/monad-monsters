@@ -1,4 +1,4 @@
-module Routing exposing (Route(..), delegateRequest, routeParser, router)
+module Routing exposing (Route(..), baseUrl, delegateRequest, makeUrl, routeParser, router)
 
 import Api
 import Html exposing (..)
@@ -44,3 +44,13 @@ delegateRequest route =
 
         Player g p ->
             Api.get (Api.Player g p)
+
+
+makeUrl : List String -> String
+makeUrl lst =
+    baseUrl ++ String.join "/" lst
+
+
+baseUrl : String
+baseUrl =
+    "http://localhost:3000/"

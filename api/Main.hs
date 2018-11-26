@@ -10,25 +10,66 @@ import Data.Aeson (ToJSON, FromJSON)
 -- import Data.Text.Lazy as TL
 
 
-data Player = Player {playerId :: Int, test :: Int} deriving(Generic, Show)
+data Player = Player {playerId :: Int, test :: Int} deriving(Generic, Show, Eq)
 instance ToJSON Player
 
-data Game = Game {gameId :: Int, gameName :: String, playerTurn :: Bool, player :: Player} deriving(Generic, Show)
+data Game = Game {gameId :: Int, gameName :: String, players :: [Player]} deriving(Generic, Show, Eq)
 instance ToJSON Game
 
+data Error = Error {etype :: String, msg :: String} deriving(Generic, Show)
+instance ToJSON Error
+
+
+main :: IO ()
 main = do
-    -- gameList <- []
-    -- gameListVar <- newMVar gameList
+    gameList <- newMVar []
 
     scotty 8000 $ do
         middleware simpleCors
+        
         get "/game/:name" $ do
             name <- param "name"
-            -- gs <- liftIO $ readMVar gameListVar
-            -- g <- gs
-            -- html $ mconcat ["<h1>Scotty, ", name, " me up!</h1>"]
-            json Game {gameId = 666, gameName = name, playerTurn = True, player = Player {playerId = 10, test = 800}}
+            gs <- liftIO $ readMVar gameList
+            
+            case validateGame name gs of
+                Nothing ->
+                    do
+                        liftIO $ modifyMVar gameList $ \game' -> return (gs, True)
+                        json gameError
+                
+                Just game ->
+                    do
+                        if game `notElem` gs then
+                            liftIO $ modifyMVar gameList $ \game' -> return (game:gs, True)
+                        else
+                            liftIO $ modifyMVar gameList $ \game' -> return (gs, True)
+                        
+                        json game
 
+
+validateGame :: String -> [Game] -> Maybe Game
+validateGame name lst =
+    core name lst 0
+    where
+        core :: String -> [Game] -> Int -> Maybe Game
+        core name (x:xs) prevId
+            | gameName x == name = validateMaxPlayers x
+            | otherwise = core name xs (prevId + 1)
+
+        core name [] prevId =
+            Just Game {gameId = prevId, gameName = name, players = []}
+
+
+
+validateMaxPlayers :: Game -> Maybe Game
+validateMaxPlayers g
+    | length (players g) < 2 = Just g
+    | otherwise = Nothing
+
+
+gameError :: Error
+gameError =
+    Error {etype = "Game", msg = "Game already exists"}
 
 -- newGame :: String -> IO Game
 -- newGame gameName =

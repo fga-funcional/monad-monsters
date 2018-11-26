@@ -5,23 +5,22 @@ import Json.Decode as D
 import Player exposing (Player, playerListDecoder)
 
 type alias Game =
-    { gameId : Int, gameName : String, playerTurn : Bool, players : List Player }
+    { gameId : Int, gameName : String, players : List Player }
 
 
 game : String -> Game
 game name =
-    Game 1 "jogo" False [(Player 1 2)]
+    Game 1 "jogo" [(Player 1 2)]
 
 
 mock : Game
 mock = 
-    Game 0 "" False [(Player 0 0)]
+    Game 0 "" [(Player 0 0)]
 
 
 gameDecoder : D.Decoder Game
 gameDecoder =
-    D.map4 Game
+    D.map3 Game
         (D.field "gameId" D.int)
         (D.field "gameName" D.string)
-        (D.field "playerTurn" D.bool)
         (D.field "players" playerListDecoder)
