@@ -11,6 +11,7 @@ import Time
 type Msg
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
+    | LoadCurGame (Result Http.Error Game)
     | LoadGame (Result Http.Error Game)
     | LoadPlayer (Result Http.Error Game)
     | SearchGame String

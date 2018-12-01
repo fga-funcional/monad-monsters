@@ -9,15 +9,15 @@ import Url.Builder exposing (absolute, string)
 
 
 type ApiRequest
-    = NewGame String
-    | Player String String
+    = CreateGame String
+    | EnterGame String String
     | Game String
 
 
 getNewGame : String -> Http.Request Game
 getNewGame name =
     getRequest
-        (buildStringUrl "http://localhost:8000/" ["game", name])
+        (buildStringUrl "http://localhost:8000/" ["games", name])
         gameDecoder
 
 
@@ -31,7 +31,7 @@ getGame name =
 getPlayer : String -> String -> Http.Request Game
 getPlayer g p =
     getRequest
-        (buildStringUrl "http://localhost:8000/" ["player", g, p])
+        (buildStringUrl "http://localhost:8000/" ["players", g, p])
         gameDecoder
 
 
@@ -44,12 +44,12 @@ get : ApiRequest -> Cmd Msg
 get request =
     case request of
         Game name ->
-            Http.send LoadPlayer (getGame name)
+            Http.send LoadCurGame (getGame name)
 
-        NewGame name ->
+        CreateGame name ->
             Http.send LoadGame (getNewGame name)
 
-        Player g p ->
+        EnterGame g p ->
             Http.send LoadPlayer (getPlayer g p)
 
 

@@ -34,12 +34,12 @@ main = do
 
             case getGame g gs of
                 Nothing ->
-                    json gameNotFound
+                    raise "Game not found. There is no game created with this name!"
                 
                 Just game ->
                     json game
 
-        get "/game/:name" $ do
+        get "/games/:name" $ do
             name <- param "name"
             gs <- liftIO $ readMVar gameList
             
@@ -47,7 +47,7 @@ main = do
                 Nothing ->
                     do
                         liftIO $ modifyMVar gameList $ \gameList' -> return (gs, True)
-                        json gameError
+                        raise "This game is already running!"
                 
                 Just game ->
                     do
@@ -58,7 +58,7 @@ main = do
                         
                         json game
         
-        get "/player/:game/:player" $ do
+        get "/players/:game/:player" $ do
             gameName <- param "game"
             playerName <- param "player"
             gs <- liftIO $ readMVar gameList
@@ -72,22 +72,23 @@ main = do
                             newGame = Game (gameId (head gs) + 1) gameName [Player 0 playerName] True
                     
                 Just game ->
-                    do
-                        liftIO $ modifyMVar gameList $ \gameList' -> return (updatedGameList, True)
-                        json updatedGame
-                        where
-                            updatedGame = registerPlayer game playerName
-                            updatedGameList = updatedGame: List.delete game gs
+                    case registerPlayer game playerName of
+                        Nothing ->
+                            raise "This game is already in progress! Try to create a new one"
+                        Just updatedGame ->
+                            do
+                                liftIO $ modifyMVar gameList $ \gameList' -> return (updatedGameList, True)
+                                json updatedGame
+                                where
+                                    updatedGameList = updatedGame: List.delete game gs
 
 
 
-registerPlayer :: Game -> String -> Game
-registerPlayer g nick =
-    -- TODO: fix player duplicates
-    let
-        waiting = (null $ players g)
-    in
-    Game (gameId g) (gameName g) (Player{playerId = getPlayerId g, playerName = nick}:players g) waiting
+registerPlayer :: Game -> String -> Maybe Game
+registerPlayer g nick
+    | nick `elem` (map playerName $ players g) = Just g
+    | (length $ players g) == 2 = Nothing
+    | otherwise = Just g {players = Player (getPlayerId g) nick:players g, waiting=null $ players g}
 
 
 getPlayerId :: Game -> Int

@@ -18,6 +18,12 @@ update msg model =
         UrlChanged url ->
             ( { model | curUrl = url }, router url )
 
+        LoadCurGame (Ok game) ->
+            ( { model | curGame = Just game }, Cmd.none)
+
+        LoadCurGame (Err err) ->
+            ( { model | page = Pages.ErrorWithMsg <| Debug.toString err }, Cmd.none )
+
         LoadGame (Ok game) ->
             ( { model | curGame = Just game, page = Pages.Player }, Cmd.none )
 
