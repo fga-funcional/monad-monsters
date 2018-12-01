@@ -6,6 +6,11 @@
 
 ## How to run the development server
 
+To run sass:
+```shell
+    $ sass front/src/scss/components/index.scss front/src/main.css --watch
+```
+
 To run elm development server:
 ```shell
     $ cd front
