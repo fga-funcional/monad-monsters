@@ -6,6 +6,7 @@ import Url
 import Http
 import Game exposing (Game)
 import Player exposing (Player)
+import Card exposing (Card)
 import Time
 
 type Msg
@@ -19,3 +20,4 @@ type Msg
     | ChangePlayer String
     | AuthPlayer Game String
     | UpdateGame Time.Posix
+    | SelectCard Card

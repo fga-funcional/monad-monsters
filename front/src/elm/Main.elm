@@ -2,7 +2,7 @@ module Main exposing (init, main, view)
 
 import Browser
 import Browser.Navigation as Nav
-import Game exposing (Game, game, mock)
+import Game exposing (Game)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
@@ -11,14 +11,14 @@ import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Pages
 import Routing exposing (..)
+import Time
 import Update exposing (..)
 import Url
-import Time
 
 
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model key url Nothing Pages.Home "" "", router url )
+    ( Model key url Nothing Nothing Pages.Home "" "", router url )
 
 
 subscriptions : Model -> Sub Msg
@@ -45,9 +45,9 @@ view model =
             case model.curGame of
                 Nothing ->
                     Pages.error
-    
+
                 Just g ->
-                    Pages.game g
+                    Pages.game g model.curPlayer
 
         Pages.Error ->
             Pages.error

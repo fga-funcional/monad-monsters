@@ -1,21 +1,11 @@
-module Game exposing (Game, game, gameDecoder, mock)
+module Game exposing (Game, gameDecoder)
 
 import Json.Decode as D
-import Player exposing (Player, playerListDecoder)
+import Player exposing (Player, playerDecoder, playerListDecoder)
 
 
 type alias Game =
     { id : Int, name : String, players : List Player, waiting : Bool }
-
-
-game : String -> Game
-game name =
-    Game 1 "jogo" [ Player 1 "robert" ] True
-
-
-mock : Game
-mock =
-    Game 0 "" [ Player 0 "jhon" ] True
 
 
 gameDecoder : D.Decoder Game

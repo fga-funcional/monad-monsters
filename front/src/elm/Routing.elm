@@ -1,4 +1,12 @@
-module Routing exposing (Route(..), baseUrl, delegateRequest, makeUrl, routeParser, router)
+module Routing exposing
+    ( Route(..)
+    , baseUrl
+    , delegateRequest
+    , makeUrl
+    , playerNameFromUrl
+    , routeParser
+    , router
+    )
 
 import Api
 import Html exposing (..)
@@ -50,6 +58,18 @@ makeUrl : List String -> String
 makeUrl lst =
     baseUrl ++ String.join "/" lst
 
+
+playerNameFromUrl : String -> String
+playerNameFromUrl url =
+    let
+        fUrl = String.filter (\x -> x /= '?') url
+        maybeName = String.split "/" fUrl |> List.reverse |> List.head
+    in
+
+    case maybeName of
+        Nothing -> ""
+        Just name -> name
+       
 
 baseUrl : String
 baseUrl =

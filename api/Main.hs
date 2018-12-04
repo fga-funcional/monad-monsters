@@ -11,10 +11,24 @@ import Data.List as List
 -- import Data.Text.Lazy as TL
 
 
-data Player = Player {playerId :: Int, playerName :: String} deriving(Generic, Show, Eq)
+data Card = Card {
+    cardKind :: String,
+    cardName :: String,
+    cardDescription :: String,
+    cardColor :: String
+} deriving(Generic, Show, Eq)
+-- instance FromJSON Card
+instance ToJSON Card
+
+data Player = Player {playerId :: Int, playerName :: String, playerCards :: [Card]} deriving(Generic, Show, Eq)
 instance ToJSON Player
 
-data Game = Game {gameId :: Int, gameName :: String, players :: [Player], waiting :: Bool} deriving(Generic, Show, Eq)
+data Game = Game {
+    gameId :: Int, 
+    gameName :: String, 
+    players :: [Player],
+    waiting :: Bool
+} deriving(Generic, Show, Eq)
 instance ToJSON Game
 
 data Error = Error {etype :: String, msg :: String} deriving(Generic, Show)
@@ -69,7 +83,9 @@ main = do
                         liftIO $ modifyMVar gameList $ \gameList' -> return (newGame:gs, True)
                         json newGame
                         where
-                            newGame = Game (gameId (head gs) + 1) gameName [Player 0 playerName] True
+                            -- add function to give player cards
+                            newPlayer = Player 0 playerName []
+                            newGame = Game (gameId (head gs) + 1) gameName [newPlayer] True
                     
                 Just game ->
                     case registerPlayer game playerName of
@@ -88,7 +104,8 @@ registerPlayer :: Game -> String -> Maybe Game
 registerPlayer g nick
     | nick `elem` (map playerName $ players g) = Just g
     | (length $ players g) == 2 = Nothing
-    | otherwise = Just g {players = Player (getPlayerId g) nick:players g, waiting=null $ players g}
+    -- add function to give player cards
+    | otherwise = Just g {players = Player (getPlayerId g) nick []:players g , waiting=null $ players g}
 
 
 getPlayerId :: Game -> Int
@@ -142,16 +159,3 @@ gameError =
 gameNotFound :: Error
 gameNotFound =
     Error {etype = "Game", msg = "Game not found"}
-
--- newGame :: String -> IO Game
--- newGame gameName =
---     return Game {gname = gameName, on = False}
-
-    
--- data Game = Game {gname :: String, on :: Bool}
-
--- game :: String -> [Game] -> IO Game
--- game name (x:xs)
---     | gname x == name = return x
---     | null xs = newGame name
---     | otherwise = game name xs

@@ -1,12 +1,14 @@
 module Pages exposing (Page(..), error, errorWithMsg, game, home, player)
 
 import Browser
-import Game exposing (Game, mock)
+import Game exposing (Game)
+import Player exposing (Player)
 import Html exposing (..)
 import Html.Attributes exposing (class, placeholder, value)
 import Html.Events exposing (on, onClick, onInput, onSubmit)
 import Msg exposing (Msg(..))
 import Url
+import Views
 
 
 type Page
@@ -67,15 +69,15 @@ player g playerName =
     }
 
 
-game : Game -> Browser.Document Msg
-game g =
+game : Game -> Maybe Player -> Browser.Document Msg
+game g p =
     let
         content =
             case g.waiting of
                 True -> 
                     h2 [] [text "Waiting for players"]
                 False ->
-                    h2 [] [text "Ready to play"]
+                    Views.game g p
     in
     
     { title = g.name ++ " | Monad Monsters"
@@ -83,7 +85,7 @@ game g =
         [ div
             [ class "main-container" ]
             [ div
-                [ class "input-player" ]
+                []
                 [ content ]
             ]
         ]
