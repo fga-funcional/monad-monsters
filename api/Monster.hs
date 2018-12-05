@@ -17,11 +17,11 @@ data Feature =
 data Result = Result { feature :: Feature, descript :: String } deriving(Show, Eq)
 
 
-rules :: [(Comb, Result)]
+rules :: [((Gene, Gene), Result)]
 rules =
     [
-        (Comb C3 C3, Result GreenFur "Verde"),
-        (Comb C3 C1, Result BlueFur "Azul"),
-        (Comb C3 C2, Result RedFur "Vermelho"),
-        (Comb C3 C4, Result PinkFur "Rosa")
+        ((C3, C3), Result GreenFur "Verde"),
+        ((C3, C1), Result BlueFur "Azul"),
+        ((C3, C2), Result RedFur "Vermelho"),
+        ((C3, C4), Result PinkFur "Rosa")
     ]
