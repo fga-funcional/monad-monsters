@@ -8,17 +8,19 @@ import Data.Monoid (mconcat)
 import Network.Wai.Middleware.Cors
 import Data.Aeson (ToJSON, FromJSON)
 import Data.List as List
+import Card (Card(..), makeCard)
+import Gene (Gene(..))
 -- import Data.Text.Lazy as TL
 
 
-data Card = Card {
-    cardKind :: String,
-    cardName :: String,
-    cardDescription :: String,
-    cardColor :: String
-} deriving(Generic, Show, Eq)
+-- data Card = Card {
+--     cardKind :: String,
+--     cardName :: String,
+--     cardDescription :: String,
+--     cardColor :: String
+-- } deriving(Generic, Show, Eq)
 -- instance FromJSON Card
-instance ToJSON Card
+-- instance ToJSON Card
 
 data Player = Player {playerId :: Int, playerName :: String, playerCards :: [Card]} deriving(Generic, Show, Eq)
 instance ToJSON Player
@@ -161,12 +163,13 @@ gameNotFound =
     Error {etype = "Game", msg = "Game not found"}
 
 
+-- Replace for real random cards function
 cardMock :: [Card]
 cardMock =
     [
-        Card "Kind1" "Cor da Iris" "Description" "red",
-        Card "Kind2" "Cor do Pelo" "Description" "blue",
-        Card "Kind2" "Cor do Pelo" "Description" "blue",
-        Card "Kind1" "Cor do Iris" "Description" "red",
-        Card "Kind3" "Tipo de orelha" "Description" "green"
+        makeCard C1,
+        makeCard I2,
+        makeCard O4,
+        makeCard C4,
+        makeCard P1
     ]

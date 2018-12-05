@@ -17,6 +17,7 @@ data Feature =
 data Result = Result { feature :: Feature, descript :: String } deriving(Show, Eq)
 
 
+
 rules :: [((Gene, Gene), Result)]
 rules =
     [
