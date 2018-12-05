@@ -1,14 +1,25 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 
 module Card (
     Card(..),
+    makeCard,
 ) where
 
+import GHC.Generics
+import Data.Aeson (ToJSON, FromJSON)
 import Monster (Result(..), Feature(..), rules)
 import Gene (Gene(..))
 
 data Card =
-    Card { kind :: Gene, name :: String, description :: String, color :: String } deriving(Show, Eq)
-
+    Card { 
+        kind :: Gene, 
+        name :: String, 
+        description :: String, 
+        color :: String
+    } deriving(Generic, Show, Eq)
+instance ToJSON Card 
+instance FromJSON Card 
 
 makeCard :: Gene -> Card
 makeCard g =
