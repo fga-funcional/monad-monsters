@@ -84,7 +84,7 @@ main = do
                         json newGame
                         where
                             -- add function to give player cards
-                            newPlayer = Player 0 playerName []
+                            newPlayer = Player 0 playerName cardMock
                             newGame = Game (gameId (head gs) + 1) gameName [newPlayer] True
                     
                 Just game ->
@@ -105,7 +105,7 @@ registerPlayer g nick
     | nick `elem` (map playerName $ players g) = Just g
     | (length $ players g) == 2 = Nothing
     -- add function to give player cards
-    | otherwise = Just g {players = Player (getPlayerId g) nick []:players g , waiting=null $ players g}
+    | otherwise = Just g {players = Player (getPlayerId g) nick cardMock:players g , waiting=null $ players g}
 
 
 getPlayerId :: Game -> Int
@@ -159,3 +159,14 @@ gameError =
 gameNotFound :: Error
 gameNotFound =
     Error {etype = "Game", msg = "Game not found"}
+
+
+cardMock :: [Card]
+cardMock =
+    [
+        Card "Kind1" "Cor da Iris" "Description" "red",
+        Card "Kind2" "Cor do Pelo" "Description" "blue",
+        Card "Kind2" "Cor do Pelo" "Description" "blue",
+        Card "Kind1" "Cor do Iris" "Description" "red",
+        Card "Kind3" "Tipo de orelha" "Description" "green"
+    ]
