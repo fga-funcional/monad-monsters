@@ -3,60 +3,62 @@ module Card (
     Card(..),
 ) where
 
-import Monster (rules)
+import Monster (Result(..), Feature(..), rules)
 import Gene (Gene(..))
 
 data Card =
     Card { kind :: Gene, name :: String, description :: String, color :: String } deriving(Show, Eq)
 
 
--- makeCard :: Gene -> Card
--- makeCard g =
---     Card g name (getDesc g) (getColor g)
+makeCard :: Gene -> Card
+makeCard g =
+    let
+        info = getNameAndColor g
+    in
+    Card g (fst info) (getDesc g) (snd info)
+    
+
+makeDesc :: [((Gene, Gene), Result)] -> String
+makeDesc xs =
+    foldl (++) "" (map mountString xs)
+
+mountString :: ((Gene, Gene), Result) -> String
+mountString x =
+    show (fst (fst x)) ++ " + "  ++ show (snd (fst x)) ++ " = " ++ descript (snd x) ++ "\n"
+
+getDesc :: Gene -> String
+getDesc g =
+    core rules g []
+    where
+        core [] g acc = makeDesc acc
+        core (x:xs) g acc
+            | fst (fst x) == g = core xs g (x:acc)
+            | snd (fst x) == g = core xs g (x:acc)
+            | otherwise =  core xs g acc
 
 
+getNameAndColor :: Gene -> (String, String)
+getNameAndColor g =
+    case g of
+        C1 -> ("Cor do Pelo", "green")
+        C2 -> ("Cor do Pelo", "green")
+        C3 -> ("Cor do Pelo", "green")
+        C4 -> ("Cor do Pelo", "green")
 
--- makeDesc :: [((Gene, Gene), Result)] -> String
--- makeDesc xs =
---     core xs ""
---     where
---         core [] st = st
---         core (x:xs) st =
---              fst (fst x) ++ "+"
+        I1 -> ("Cor da Iris", "red")
+        I2 -> ("Cor da Iris", "red")
+        I3 -> ("Cor da Iris", "red")
+        I4 -> ("Cor da Iris", "red")
 
--- getDesc :: Gene -> String
--- getDesc g =
---     core rules g []
---     where
---         core [] g = makeDesc
---         core (x:xs) g acc
---             | fst (fst x) == g = core xs g (x:acc)
---             | snd (fst x) == g = core xs g (x:acc)
---             | otherwise =  core xs g acc
+        O1 -> ("Tipo de Orelha", "yellow")
+        O2 -> ("Tipo de Orelha", "yellow")
+        O3 -> ("Tipo de Orelha", "yellow")
+        O4 -> ("Tipo de Orelha", "yellow")
 
+        P1 -> ("Tamanho do Pelo", "blue")
+        P2 -> ("Tamanho do Pelo", "blue")
 
--- getColor :: Gene -> String
--- getColor g =
---     case g of
---         C1 -> "green"
---         C2 -> "green"
---         C3 -> "green"
---         C4 -> "green"
-
---         I1 -> "red"
---         I2 -> "red"
---         I3 -> "red"
---         I4 -> "red"
-
---         O1 -> "yellow"
---         O2 -> "yellow"
---         O3 -> "yellow"
---         O4 -> "yellow"
-
---         P1 -> "blue"
---         P2 -> "blue"
-
---         T1 -> "orange"
---         T2 -> "orange"
+        T1 -> ("Tamanho da Perna", "orange")
+        T2 -> ("Tamanho da Perna", "orange")
 
         
