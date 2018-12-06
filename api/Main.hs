@@ -8,8 +8,9 @@ import Data.Monoid (mconcat)
 import Network.Wai.Middleware.Cors
 import Data.Aeson (ToJSON, FromJSON)
 import Data.List as List
-import Card (Card(..), makeCard)
+import Card (Card(..), makeCard, giveCards, deck)
 import Gene (Gene(..))
+import Monster (Feature)
 -- import Data.Text.Lazy as TL
 
 data Player = Player {playerId :: Int, playerName :: String, playerCards :: [Card]} deriving(Generic, Show, Eq)
@@ -34,9 +35,10 @@ main = do
     scotty 8000 $ do
         middleware simpleCors
         
-        get "/cards" $
-            json cardMock
-    
+        get "/cards" $ do
+            h <- liftIO hands
+            json h
+
         get "/:game" $ do
             g <- param "game"
             gs <- liftIO $ readMVar gameList
@@ -71,18 +73,20 @@ main = do
             gameName <- param "game"
             playerName <- param "player"
             gs <- liftIO $ readMVar gameList
-
+            -- d <- liftIO $ readMVar mainDeck
             case getGame gameName gs of
                 Nothing ->
                     do
                         liftIO $ modifyMVar gameList $ \gameList' -> return (newGame:gs, True)
+                        -- h <- liftIO $ hands
                         json newGame
                         where
                             -- add function to give player cards
                             newPlayer = Player 0 playerName cardMock
                             newGame = Game (gameId (head gs) + 1) gameName [newPlayer] True
                     
-                Just game ->
+                Just game ->    
+                    -- h <- liftIO $ hands
                     case registerPlayer game playerName of
                         Nothing ->
                             raise "This game is already in progress! Try to create a new one"
@@ -95,13 +99,13 @@ main = do
 
         post "/cards/combine" $ do
             cs <- jsonData :: ActionM [Card]
-            tryToCombine cs
+            -- tryToCombine cs
             -- show c1
-            json c1
+            json cs
 
 
-tryToCombine :: [Card] -> Maybe Feature
-tryToCombine cs =
+-- tryToCombine :: [Card] -> Maybe Feature
+-- tryToCombine cs = Nothing
 
 
 
@@ -110,8 +114,10 @@ registerPlayer g nick
     | nick `elem` (map playerName $ players g) = Just g
     | (length $ players g) == 2 = Nothing
     -- add function to give player cards
-    | otherwise = Just g {players = Player (getPlayerId g) nick cardMock:players g , waiting=null $ players g}
-
+    | otherwise =
+        -- h <- hands :: IO [[Card]]
+        -- ph <- (h !! 2) :: [Card]
+        Just g {players = Player (getPlayerId g) nick cardMock:players g , waiting=null $ players g}
 
 getPlayerId :: Game -> Int
 getPlayerId g =
@@ -166,13 +172,16 @@ gameNotFound =
     Error {etype = "Game", msg = "Game not found"}
 
 
--- Replace for real random cards function
 cardMock :: [Card]
 cardMock =
     [
-        makeCard C1,
-        makeCard I2,
-        makeCard O4,
-        makeCard T1,
-        makeCard P1
+        deck !! 2,
+        deck !! 7,
+        deck !! 43,
+        deck !! 26,
+        deck !! 11
     ]
+
+
+hands :: IO [[Card]]
+hands = giveCards deck 2 5
