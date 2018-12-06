@@ -1,9 +1,22 @@
-module Mission() where
+module Mission(missionCards) where
 
 import Monster(Feature(..), getLongDescript)
 
 
 data Mission = Mission {objectives :: [Feature], mname :: String } deriving (Show, Eq)
+
+missionCards:: [(Mission, String)]
+missionCards = core missions []
+    where 
+        core xs acc = foldl (\ acc x -> (x, getMissionDescript x) : acc) acc xs
+
+getMissionDescript:: Mission -> String
+getMissionDescript m = core "Sua missao eh conseguir um monstro que tenha " (objectives m) ""
+    where 
+        core desc [] (c:cs) = desc ++ (c:cs)
+        core desc [x] (c:cs) = core desc [] ((c:cs)++" e "++ getLongDescript x ++ ".")
+        core desc (x:xs) (c:cs) = core desc xs ((c:cs) ++ ", " ++ getLongDescript x)
+        core desc (x:xs) [] = core desc xs (getLongDescript x)
 
 missions :: [Mission]
 missions =
