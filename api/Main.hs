@@ -172,6 +172,6 @@ cardMock =
         makeCard C1,
         makeCard I2,
         makeCard O4,
-        makeCard C4,
+        makeCard T1,
         makeCard P1
     ]
