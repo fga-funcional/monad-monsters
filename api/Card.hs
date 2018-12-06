@@ -21,6 +21,20 @@ data Card =
 instance ToJSON Card 
 instance FromJSON Card 
 
+deck :: [Card]
+deck = cards
+    where 
+        cards = core genes []
+        core xs acc = foldl (\ acc x -> makeCard x : acc) acc xs
+        genes = 
+            [
+                I1,I1,I1,I1, I2,I2,I2,I2, I3,I3,I3,I3, I4,I4,I4,I4,
+                O1,O1,O1, O2,O2,O2, O3,O3,O3, O4,O4,O4,
+                C1,C1,C1, C2,C2,C2, C3,C3,C3, C4,C4,C4,
+                T1,T1,T1,T1,T1, T2,T2,T2,T2,T2,
+                P1,P1, P2,P2,P2,P2
+            ] 
+
 makeCard :: Gene -> Card
 makeCard g =
     let
