@@ -53,6 +53,21 @@ remainingDeck xs = [x | x <- deck, x `notElem` xs]
 remainingCards :: [Card] -> [Card] -> [Card]
 remainingCards xs ys = [x | x <- xs, x `notElem` ys]
 
+tryToCombine :: [Card] -> Maybe Feature
+tryToCombine cs
+    | length cs<2 = Nothing
+    | length cs>2 = Nothing
+    | otherwise = checkRules (kind $ head cs ) (kind $ cs !! 1)
+
+checkRules :: Gene -> Gene -> Maybe Feature
+checkRules x y = core x y rules
+    where
+        core x y [] = Nothing
+        core x y (r:rs) = if fst (fst r) == x && snd (fst r) == y
+                                then Just (feature (snd r))
+                          else
+                            core x y rs
+
 
 giveCards :: [Card] -> Int -> Int -> IO [[Card]]
 giveCards xs np nc =
