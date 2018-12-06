@@ -12,16 +12,6 @@ import Card (Card(..), makeCard)
 import Gene (Gene(..))
 -- import Data.Text.Lazy as TL
 
-
--- data Card = Card {
---     cardKind :: String,
---     cardName :: String,
---     cardDescription :: String,
---     cardColor :: String
--- } deriving(Generic, Show, Eq)
--- instance FromJSON Card
--- instance ToJSON Card
-
 data Player = Player {playerId :: Int, playerName :: String, playerCards :: [Card]} deriving(Generic, Show, Eq)
 instance ToJSON Player
 
@@ -44,8 +34,9 @@ main = do
     scotty 8000 $ do
         middleware simpleCors
         
-        get "/cards" $ do
+        get "/cards" $
             json cardMock
+    
         get "/:game" $ do
             g <- param "game"
             gs <- liftIO $ readMVar gameList
@@ -101,6 +92,16 @@ main = do
                                 json updatedGame
                                 where
                                     updatedGameList = updatedGame: List.delete game gs
+
+        post "/cards/combine" $ do
+            cs <- jsonData :: ActionM [Card]
+            tryToCombine cs
+            -- show c1
+            json c1
+
+
+tryToCombine :: [Card] -> Maybe Feature
+tryToCombine cs =
 
 
 
