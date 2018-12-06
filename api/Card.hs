@@ -6,6 +6,8 @@ module Card (
     makeCard,
 ) where
 
+
+import System.Random
 import GHC.Generics
 import Data.Aeson (ToJSON, FromJSON)
 import Monster (Result(..), Feature(..), getDescription,rules)
@@ -34,6 +36,17 @@ deck = cards
                 T1,T1,T1,T1,T1, T2,T2,T2,T2,T2,
                 P1,P1, P2,P2,P2,P2
             ] 
+
+pick :: [Card] -> IO Card
+pick xs = do
+    i <- randomRIO(0, length xs-1)
+    return (xs !! i)
+
+remainingDeck :: [Card] -> [Card]
+remainingDeck xs = [x | x <- deck, x `notElem` xs]
+
+remainingCards :: [Card] -> [Card] -> [Card]
+remainingCards xs ys = [x | x <- xs, x `notElem` ys]
 
 makeCard :: Gene -> Card
 makeCard g =
