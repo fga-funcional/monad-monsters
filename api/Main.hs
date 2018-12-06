@@ -105,9 +105,6 @@ main = do
             json cs
 
 
--- tryToCombine :: [Card] -> Maybe Feature
--- tryToCombine cs = Nothing
-
 
 
 registerPlayer :: Game -> String -> Maybe Game
