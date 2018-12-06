@@ -8,7 +8,7 @@ module Card (
 
 import GHC.Generics
 import Data.Aeson (ToJSON, FromJSON)
-import Monster (Result(..), Feature(..), rules)
+import Monster (Result(..), Feature(..), getDescription,rules)
 import Gene (Gene(..))
 
 data Card =
@@ -35,7 +35,7 @@ makeDesc xs =
 
 mountString :: ((Gene, Gene), Result) -> String
 mountString x =
-    show (fst (fst x)) ++ " + "  ++ show (snd (fst x)) ++ " = " ++ descript (snd x) ++ "\n"
+    show (fst (fst x)) ++ " + "  ++ show (snd (fst x)) ++ " = " ++ getDescription (feature (snd x))++ "\n"
 
 getDesc :: Gene -> String
 getDesc g =
