@@ -44,6 +44,8 @@ main = do
     scotty 8000 $ do
         middleware simpleCors
         
+        get "/cards" $ do
+            json cardMock
         get "/:game" $ do
             g <- param "game"
             gs <- liftIO $ readMVar gameList
