@@ -6,6 +6,7 @@ module Card (
     makeCard,
     giveCards,
     deck,
+    tryToCombine,
 ) where
 
 

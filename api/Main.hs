@@ -8,7 +8,7 @@ import Data.Monoid (mconcat)
 import Network.Wai.Middleware.Cors
 import Data.Aeson (ToJSON, FromJSON)
 import Data.List as List
-import Card (Card(..), makeCard, giveCards, deck)
+import Card (Card(..), makeCard, giveCards, deck, tryToCombine)
 import Gene (Gene(..))
 import Monster (Feature)
 -- import Data.Text.Lazy as TL
@@ -99,12 +99,10 @@ main = do
 
         post "/cards/combine" $ do
             cs <- jsonData :: ActionM [Card]
-            
-            -- tryToCombine cs
-            -- show c1
-            json cs
+            case tryToCombine cs of
+                Nothing -> json gameError
 
-
+                Just f -> json f
 
 
 registerPlayer :: Game -> String -> Maybe Game

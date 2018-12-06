@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Monster (
     Feature(..),
     Result(..),
@@ -7,6 +9,8 @@ module Monster (
 ) where
 
 import Gene (Gene(..), Comb(..))
+import Data.Aeson (ToJSON, FromJSON)
+import GHC.Generics
 
 
 data Feature =
@@ -14,7 +18,9 @@ data Feature =
     NoEars | ButterflyEars | RabbitEars | StarEars |
     BlueEyes | YellowEyes | BrownEyes | PurpleEyes |
     Furry | Spotted |
-    Blue | Red | Green | Pink deriving(Show, Eq)
+    Blue | Red | Green | Pink deriving(Generic, Show, Eq)
+instance ToJSON Feature
+instance FromJSON Feature
 
 newtype Result = Result { feature :: Feature } deriving(Show, Eq)
 
