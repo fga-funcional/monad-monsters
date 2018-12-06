@@ -8,7 +8,7 @@ import Data.Monoid (mconcat)
 import Network.Wai.Middleware.Cors
 import Data.Aeson (ToJSON, FromJSON)
 import Data.List as List
-import Card (Card(..), makeCard)
+import Card (Card(..), makeCard, giveCards, deck)
 import Gene (Gene(..))
 -- import Data.Text.Lazy as TL
 
@@ -45,7 +45,7 @@ main = do
         middleware simpleCors
         
         get "/cards" $ do
-            json cardMock
+            json hands
         get "/:game" $ do
             g <- param "game"
             gs <- liftIO $ readMVar gameList
@@ -88,7 +88,7 @@ main = do
                         json newGame
                         where
                             -- add function to give player cards
-                            newPlayer = Player 0 playerName cardMock
+                            newPlayer = Player 0 playerName (hands !! 1)
                             newGame = Game (gameId (head gs) + 1) gameName [newPlayer] True
                     
                 Just game ->
@@ -109,7 +109,7 @@ registerPlayer g nick
     | nick `elem` (map playerName $ players g) = Just g
     | (length $ players g) == 2 = Nothing
     -- add function to give player cards
-    | otherwise = Just g {players = Player (getPlayerId g) nick cardMock:players g , waiting=null $ players g}
+    | otherwise = Just g {players = Player (getPlayerId g) nick (hands!!2):players g , waiting=null $ players g}
 
 
 getPlayerId :: Game -> Int
@@ -165,13 +165,5 @@ gameNotFound =
     Error {etype = "Game", msg = "Game not found"}
 
 
--- Replace for real random cards function
-cardMock :: [Card]
-cardMock =
-    [
-        makeCard C1,
-        makeCard I2,
-        makeCard O4,
-        makeCard T1,
-        makeCard P1
-    ]
+hands :: [[Card]]
+hands = giveCards deck 2 5

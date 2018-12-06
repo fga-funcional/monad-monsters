@@ -48,6 +48,23 @@ remainingDeck xs = [x | x <- deck, x `notElem` xs]
 remainingCards :: [Card] -> [Card] -> [Card]
 remainingCards xs ys = [x | x <- xs, x `notElem` ys]
 
+
+giveCards :: [Card] -> Int -> Int -> IO [[Card]]
+giveCards xs np nc =
+    core xs np nc nc [] []
+    where 
+        remaining xs ys e = [x | x <- xs, x /= e, e `notElem` ys]
+        core xs np nc acc_nc c_acc h_acc = do
+            c <- pick xs
+            if np == 0
+                then return h_acc
+            else
+                if acc_nc == 0
+                    then core (remaining xs c_acc c) (np-1) nc nc [] ((c:c_acc):h_acc) 
+                else
+                    core (remaining xs c_acc c) np nc (acc_nc-1) (c:c_acc) h_acc
+
+
 makeCard :: Gene -> Card
 makeCard g =
     let
