@@ -1,3 +1,6 @@
+## Report
+[Relatório Final](https://github.com/fga-funcional/monad-monsters/blob/master/report.md)
+
 ## Dependencies
 [```elm```](https://elm-lang.org/)
 
