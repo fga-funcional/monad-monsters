@@ -43,3 +43,19 @@ com o Haskell. Nele definimos o union type ApiRequest que nos possibilitou encap
 Api.get (CreateGame "jogo1").
 
 ## Qualidade do produto
+
+### Recursos básicos
+
+Apesar de não conseguirmos finalizar o escopo do projeto, alguns recursos básicos da aplicação como: roteamento estilo dontpad e comunicação com a api haskell foram bem implementados.
+
+### Interações eficientes
+
+As interações foram implementadas utilizando bem a arquitetura Elm, sempre lançando mensagens para o update e então performando algun tipo de ação.
+
+### Integração front + back
+
+A integração front e back poderia ter sido melhor dividida, pois fazemos bastante coisa no front que talvez poderiam ser executadas no back, porém os dois sistemas foram conectados adequadamente e o front utiliza o back como mecanismo de persistência, o que nos proporcionou rodar diferentes jogos em diferentes url's simultaneamente.
+
+### Método
+
+Utilizamos a ferramenta [create-elm-app](https://github.com/halfzebra/create-elm-app) que facilita bastante o desenvolvimento, pois possui um servidor diferente do elm reactor que possibilita a utilização de roteamente de urls, além de um console de debug na página que facilita enxergar o estado da aplicação em determinados momentos. Esta ferramenta também possui um comando para build que tenta criar um versão bastante otimizada da aplicação.
